@@ -8,3 +8,8 @@ all:
 shellSort:
 	@g++ -oshellsort.bin shellsort.cpp -std=c++11
 	@echo Pruebe a ejecutar el algoritmo Shell con ./shellsort.bin salida.txt 12345 1000 2000 3000
+insertionSort:
+	@g++ -oinsertionsort.bin insertionsort.cpp -std=c++11
+	@echo Pruebe a ejecutar el algoritmo Insertion con ./insertionsort.bin salida.txt 12345 1000 2000 3000
+clean:
+	@rm -f *.bin
