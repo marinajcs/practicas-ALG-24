@@ -1,7 +1,6 @@
-#include <cstdlib> // Para usar srand y rand
 #include <chrono>
 #include <iostream>
-#include <fstream> // Para usar ficheros
+#include <fstream>
 #include <limits.h>
 using namespace std;
 
@@ -85,7 +84,7 @@ int main(int argc, char *argv[]) {
 
 		fsalida << n <<" "<< tejecucion <<"\n";
 	}
-	
+
 	fsalida.close();
 
 	return 0;
