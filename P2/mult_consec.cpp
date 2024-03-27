@@ -6,15 +6,14 @@ using namespace std;
 //Lineal: O(n)
 pair<bool,unsigned int> MultiplConsec(unsigned int n) {
 	unsigned long i, y;
-	bool found = false, has_sol = true;
+	bool found = false;
 	pair<bool,int> res;	
 
-	for (i = 1; i < n && !found && has_sol; i++) {
+	for (i = 1; i < n && !found; i++) {
 		if (n == (i*(i+1)*(i+2)) ) {
 			y = i;
 			found = true;
-		} else if (n < (i*(i+1)*(i+2)))
-			has_sol = false;
+		}
 	}
 	if (found) {
 		res.first = found;
@@ -29,7 +28,7 @@ int main(int argc, char *argv[]) {
 	double tejecucion;
 	ofstream fsalida;
 	
-	if (argc <= 3) {
+	if (argc <= 2) {
 		cerr<<"\nError: El programa se debe ejecutar de la siguiente forma.\n\n";
 		return 0;
 	}
@@ -42,7 +41,7 @@ int main(int argc, char *argv[]) {
 	
 	pair<bool,int> caso;
 
-	for (argumento = 3; argumento<argc; argumento++) {
+	for (argumento = 2; argumento<argc; argumento++) {
 		n = atoi(argv[argumento]);
 		cerr << "Ejecutando para caso: " << n << endl;
 		

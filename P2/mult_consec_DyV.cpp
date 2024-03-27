@@ -53,7 +53,7 @@ int main(int argc, char *argv[]) {
 	double tejecucion;
 	ofstream fsalida;
 	
-	if (argc <= 3) {
+	if (argc <= 2) {
 		cerr<<"\nError: El programa se debe ejecutar de la siguiente forma.\n\n";
 		return 0;
 	}
@@ -66,7 +66,7 @@ int main(int argc, char *argv[]) {
 	
 	pair<bool,int> caso;
 
-	for (argumento = 3; argumento<argc; argumento++) {
+	for (argumento = 2; argumento<argc; argumento++) {
 		n= atoi(argv[argumento]);
 		cerr << "Ejecutando para caso: " << n << endl;
 		
