@@ -10,6 +10,10 @@ multConsec_test:
 	@echo Usando el algoritmo Divide y Vencerás:
 	./MultConsecDyV.bin multconsecdyv.txt 25 50 75 100 125 150 175 200 225 250 275 300 350 375 400 425 450 475 500
 
+campeonato_compile:
+	@echo Pruebe a ejecutar el algoritmo básico con ./Campeonato.bin 8
+	@g++ -oCampeonato.bin campeonato.cpp -std=c++11
+
 clean:
 	@rm -f *.bin
 	@rm -f multconsecdyv.txt
