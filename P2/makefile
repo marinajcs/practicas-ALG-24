@@ -14,6 +14,10 @@ campeonato_compile:
 	@echo Pruebe a ejecutar el algoritmo básico con ./Campeonato.bin 8
 	@g++ -oCampeonato.bin campeonato.cpp -std=c++11
 
+tornillos_compile:
+	@echo Pruebe a ejecutar el algoritmo básico con ./Tornillos.bin
+	@g++ -oTornillos.bin tornillos.cpp -std=c++11
+
 clean:
 	@rm -f *.bin
 	@rm -f multconsecdyv.txt
