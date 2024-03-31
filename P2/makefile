@@ -1,14 +1,14 @@
-multConsec_compile:
+p3_compile:
 	@echo Pruebe a ejecutar el algoritmo básico con ./MultConsecBasico.bin salida.txt 1000 2000 3000
-	@g++ -oMultConsecBasico.bin mult_consec.cpp -std=c++11
+	@g++ -oMultConsecBasico.bin p3_iterativo.cpp -std=c++11
 	@echo Pruebe a ejecutar el algoritmo divide y vencerás con ./MultConsecDyV.bin salida.txt 1000 2000 3000
-	@g++ -oMultConsecDyV.bin mult_consec_DyV.cpp -std=c++11
+	@g++ -oMultConsecDyV.bin p3_dyv.cpp -std=c++11
 
-multConsec_test:
+p3_test:
 	@echo Usando el algoritmo básico:
-	./MultConsecBasico.bin multconsec.txt 25 50 75 100 125 150 175 200 225 250 275 300 350 375 400 425 450 475 500
+	./MultConsecBasico.bin p3_iterativo_ejemplo.txt 25 50 75 100 125 150 175 200 225 250 275 300 350 375 400 425 450 475 500
 	@echo Usando el algoritmo Divide y Vencerás:
-	./MultConsecDyV.bin multconsecdyv.txt 25 50 75 100 125 150 175 200 225 250 275 300 350 375 400 425 450 475 500
+	./MultConsecDyV.bin p3_dyv_ejemplo.txt 25 50 75 100 125 150 175 200 225 250 275 300 350 375 400 425 450 475 500
 
 campeonato_compile:
 	@echo Pruebe a ejecutar el algoritmo básico con ./Campeonato.bin 8
@@ -16,5 +16,4 @@ campeonato_compile:
 
 clean:
 	@rm -f *.bin
-	@rm -f multconsecdyv.txt
-	@rm -f multconsec.txt
+	@rm -f *ejemplo.txt
