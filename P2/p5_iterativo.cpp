@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <set>
+#include <chrono>
+#include <fstream>
 
 using namespace std;
 
@@ -66,13 +68,36 @@ void crearCalendario(int n) {
     }
 }
 
-int main() {
-    int numEquipos;
+int main(int argc, char *argv[]) {
+    int n, argumento;
+    chrono::time_point<std::chrono::high_resolution_clock> t0, tf;
+	double tejecucion;
+	ofstream fsalida;
+	
+	if (argc <= 2) {
+		cerr<<"\nError: El programa se debe ejecutar de la siguiente forma.\n\n";
+		return 0;
+	}
+	
+	fsalida.open(argv[1]);
+	if (!fsalida.is_open()) {
+		cerr<<"Error: No se pudo abrir fichero para escritura "<<argv[1]<<"\n\n";
+		return 0;
+	}
+	
+	for (argumento = 2; argumento<argc; argumento++) {
+		n = atoi(argv[argumento]);
+		cerr << "Ejecutando para caso: " << n << endl;
+		
+		t0 = std::chrono::high_resolution_clock::now();
+		crearCalendario(n);
+		tf = std::chrono::high_resolution_clock::now();
 
-    cout << "Ingrese el número de equipos (debe ser par): ";
-    cin >> numEquipos;
+		unsigned long tejecucion = std::chrono::duration_cast<std::chrono::microseconds>(tf - t0).count();
+		fsalida << n <<" "<< tejecucion <<"\n";
+	}
+	
+	fsalida.close();
 
-    crearCalendario(numEquipos);
-
-    return 0;
+	return 0;
 }
