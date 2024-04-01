@@ -62,7 +62,7 @@ p5_test:
 	@echo executing the dyv algorithm P5 No Semilla
 	./p5_dyv.bin p5_dyv.csv 2 4 8 16 32
 
-all: p1_compile p1_test p2_compile p2_test p3_compile p4_compile p4_test p3_test p5_compile p5_test
+all: p1_compile p1_test p2_compile p2_test p3_compile p3_test p4_compile p4_test p5_compile p5_test
 
 clean:
 	@rm -f *.bin
