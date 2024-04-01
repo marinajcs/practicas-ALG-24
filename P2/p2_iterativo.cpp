@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include <fstream>
 
+//#define DEBUG
 using namespace std;
 
 void tornillosTuercasIterativo(vector<int> & cajonA, vector<int> & cajonB){
@@ -40,7 +41,7 @@ int main(int argc, char *argv[]){
         }
 
         // Abrimos fichero de salida
-        string merge = string(argv[1]) + "merge.csv";
+        string merge = string(argv[1]) + ".csv";
         fsalida.open(merge);
 
         if (!fsalida.is_open()) {
@@ -74,26 +75,28 @@ int main(int argc, char *argv[]){
                 actual_elem = rand() % n;
                 cajonB.push_back(actual_elem);
             }
+
+            cerr << "Ejecutando algoritmo tornillo y tuercas iterativo para tam " << n << endl ;
+
+            t0= std::chrono::high_resolution_clock::now(); // Cogemos el tiempo en que comienza la ejecuciÛn del algoritmo
+
+            tornillosTuercasIterativo(cajonA, cajonB);
+
+            tf= std::chrono::high_resolution_clock::now(); // Cogemos el tiempo en que finaliza la ejecuciÛn del algoritmo
+            tejecucion= std::chrono::duration_cast<std::chrono::microseconds>(tf - t0).count();
+
+            cerr << "\tTiempo de ejec. (us): " << tejecucion << " para tam. caso "<< n << endl;
+            
+            // Guardamos tam. de caso y t_ejecucion a fichero de salida
+            fsalida<<n<<" "<<tejecucion<<"\n";
+            #ifdef DEBUG
+            for (auto it=cajonA.begin(); it != cajonA.end(); ++it)
+                cout << *it << " ";
+            cout << endl;
+
+            for (auto it=cajonB.begin(); it != cajonB.end(); ++it)
+                cout << *it << " ";
+            cout << endl;
+            #endif
         }
-        
-        cerr << "Ejecutando algoritmo tornillo y tuercas iterativo para tam " << n << endl ;
-
-		t0= std::chrono::high_resolution_clock::now(); // Cogemos el tiempo en que comienza la ejecuciÛn del algoritmo
-
-        tornillosTuercasIterativo(cajonA, cajonB);
-
-		tf= std::chrono::high_resolution_clock::now(); // Cogemos el tiempo en que finaliza la ejecuciÛn del algoritmo
-		tejecucion= std::chrono::duration_cast<std::chrono::microseconds>(tf - t0).count();
-
-        cerr << "\tTiempo de ejec. (us): " << tejecucion << " para tam. caso "<< n << endl;
-        
-        for (auto it=cajonA.begin(); it != cajonA.end(); ++it)
-            cout << *it << " ";
-        cout << endl;
-
-        for (auto it=cajonB.begin(); it != cajonB.end(); ++it)
-            cout << *it << " ";
-        cout << endl;
-
-
 }

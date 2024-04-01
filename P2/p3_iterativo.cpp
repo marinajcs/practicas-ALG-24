@@ -1,6 +1,9 @@
 #include <chrono>
 #include <iostream>
 #include <fstream>
+
+// #define DEBUG
+
 using namespace std;
 
 //Lineal: O(n)
@@ -50,12 +53,14 @@ int main(int argc, char *argv[]) {
 		tf = std::chrono::high_resolution_clock::now();
 		unsigned long tejecucion = std::chrono::duration_cast<std::chrono::nanoseconds>(tf - t0).count();
 
+		#ifdef DEBUG
 		if (caso.first)
 			cout << "\t-> Para n=" << n << ", y=" << caso.second << endl;
 		else
 			cout << "\t-> Para n=" << n << " no existe 'y'" << endl;
 			
 		cout << "\t-> Tiempo de ejec. (ns): " << tejecucion << endl;
+		#endif
 
 		fsalida << n <<" "<< tejecucion <<"\n";
 	}

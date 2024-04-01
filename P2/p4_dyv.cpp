@@ -112,7 +112,7 @@ int main(int argc, char *argv[]){
         }
 
         // Abrimos fichero de salida
-        string merge = string(argv[1]) + "merge.csv";
+        string merge = string(argv[1]) + ".csv";
         fsalida.open(merge);
 
         if (!fsalida.is_open()) {
@@ -137,19 +137,22 @@ int main(int argc, char *argv[]){
                 actual_elem = rand() % n;
                 aleatorios_casos.push_back(actual_elem);
             }
+  
+            cerr << "Ejecutando algoritmo P4 DyV para tam " << n << endl ;
+
+            t0= std::chrono::high_resolution_clock::now(); // Cogemos el tiempo en que comienza la ejecuciÛn del algoritmo
+
+            mergeSort(aleatorios_casos, 0, aleatorios_casos.size());
+            vector<int> unique=uniqueElements(aleatorios_casos);
+
+            tf= std::chrono::high_resolution_clock::now(); // Cogemos el tiempo en que finaliza la ejecuciÛn del algoritmo
+            tejecucion= std::chrono::duration_cast<std::chrono::microseconds>(tf - t0).count();
+
+            cerr << "\tTiempo de ejec. (us): " << tejecucion << " para tam. caso "<< n << endl;
+            fsalida << n <<" "<< tejecucion <<"\n";
+
         }
-        
-        cerr << "Ejecutando algoritmo MergeSort para tam " << n << endl ;
-
-		t0= std::chrono::high_resolution_clock::now(); // Cogemos el tiempo en que comienza la ejecuciÛn del algoritmo
-
-        mergeSort(aleatorios_casos, 0, aleatorios_casos.size());
-        vector<int> unique=uniqueElements(aleatorios_casos);
-
-		tf= std::chrono::high_resolution_clock::now(); // Cogemos el tiempo en que finaliza la ejecuciÛn del algoritmo
-		tejecucion= std::chrono::duration_cast<std::chrono::microseconds>(tf - t0).count();
-
-        cerr << "\tTiempo de ejec. (us): " << tejecucion << " para tam. caso "<< n << endl;
+  
         
         // for (auto it=aleatorios_casos.begin(); it != aleatorios_casos.end(); ++it)
         //     cout << *it << " ";

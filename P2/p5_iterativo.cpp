@@ -4,6 +4,8 @@
 #include <chrono>
 #include <fstream>
 
+// #define DEBUG
+
 using namespace std;
 
 void crearCalendario(int n) {
@@ -29,7 +31,10 @@ void crearCalendario(int n) {
 
     // Iterar para n-1 días
     for (int day = 1; day <= n - 1; ++day) {
-        cout << "Día " << day << ":" << endl;
+
+        #ifdef DEBUG
+            cout << "Día " << day << ":" << endl;
+        #endif
         for (int i = 0; i < n / 2; ++i) {
             int equipo1 = equipos[i];
             int equipo2 = equipos[n - 1 - i];
@@ -41,8 +46,9 @@ void crearCalendario(int n) {
                 }
             }
 
+            #ifdef DEBUG
             cout << "Partido " << i + 1 << ": Equipo " << equipo1 << " vs Equipo " << equipo2 << endl;
-
+            #endif 
             res[equipo1-1][day-1] = equipo2;
             res[equipo2-1][day-1] = equipo1;
 
@@ -57,6 +63,7 @@ void crearCalendario(int n) {
         equipos[1] = temp;
     }
 
+    #ifdef DEBUG
     cout << "\nMatriz de enfrentamientos:" << endl;
     
     for (int i = 0; i < n; ++i){
@@ -66,6 +73,7 @@ void crearCalendario(int n) {
         }
         cout << endl;
     }
+    #endif 
 }
 
 int main(int argc, char *argv[]) {
@@ -78,8 +86,8 @@ int main(int argc, char *argv[]) {
 		cerr<<"\nError: El programa se debe ejecutar de la siguiente forma.\n\n";
 		return 0;
 	}
-	
-	fsalida.open(argv[1]);
+    string merge = string(argv[1]) + ".csv";
+	fsalida.open(merge);
 	if (!fsalida.is_open()) {
 		cerr<<"Error: No se pudo abrir fichero para escritura "<<argv[1]<<"\n\n";
 		return 0;

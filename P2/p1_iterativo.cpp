@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 	srand(semilla);
 	
 	// Pasamos por cada tamaÒo de caso
-	for (argumento = 2; argumento<argc; argumento++) {
+	for (argumento = 3; argumento<argc; argumento++) {
 		
 		// Cogemos el tamanio del caso
 		n= atoi(argv[argumento]);

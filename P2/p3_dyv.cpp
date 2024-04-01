@@ -2,6 +2,9 @@
 #include <iostream>
 #include <fstream>
 #include <limits.h>
+
+//#define DEBUG
+
 using namespace std;
 
 //Constante: O(1)
@@ -68,19 +71,24 @@ int main(int argc, char *argv[]) {
 
 	for (argumento = 2; argumento<argc; argumento++) {
 		n= atoi(argv[argumento]);
+		
+		#ifdef DEBUG
 		cerr << "Ejecutando para caso: " << n << endl;
+		#endif
 		
 		t0= std::chrono::high_resolution_clock::now();
 		caso = MultiplConsecDyV(n);
 		tf= std::chrono::high_resolution_clock::now();
 		unsigned long tejecucion= std::chrono::duration_cast<std::chrono::nanoseconds>(tf - t0).count();
 
+		#ifdef DEBUG
 		if (caso.first)
 			cout << "\t-> Para n=" << n << ", y=" << caso.second << endl;
 		else
 			cout << "\t-> Para n=" << n << " no existe 'y'" << endl;
 			
 		cout << "\t-> Tiempo de ejec. (ns): " << tejecucion << endl;
+		#endif
 
 		fsalida << n <<" "<< tejecucion <<"\n";
 	}
