@@ -35,7 +35,6 @@ p3_test:
 	@echo executing the dyv algorithm P3
 	./p3_dyv.bin p3_dyv.csv 25 50 75 100 125 150 175 200 225 250 275 300 350 375 400 425 450 475 500
 
-
 p4_compile:
 	@echo compiling the basic algorithm P4
 	@g++ -O2 -o p4_iterativo.bin p4_iterativo.cpp -std=c++11
@@ -56,15 +55,14 @@ p5_compile:
 	@g++ -O2 -o p5_dyv.bin p5_iterativo.cpp -std=c++11
 
 p5_test:
-	@echo executing the basic algorithm P5 Semilla 1
-	./p5_iterativo.bin p5_iterativo.csv 1 2 4 8 16 32
+	@echo executing the basic algorithm No Semilla
+	./p5_iterativo.bin p5_iterativo 2 4 8 16 32 64 128
 	
 	@echo executing the dyv algorithm P5 No Semilla
-	./p5_dyv.bin p5_dyv.csv 2 4 8 16 32
+	./p5_dyv.bin p5_dyv 2 4 8 16 32 64 128
 
 all: p1_compile p1_test p2_compile p2_test p3_compile p3_test p4_compile p4_test p5_compile p5_test
 
 clean:
 	@rm -f *.bin
-	@rm *.csv
-	@rm -f *ejemplo.txt
+	@rm -f *.csv

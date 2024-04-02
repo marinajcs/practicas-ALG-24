@@ -27,11 +27,8 @@ void crearCalendario(int n) {
     }
 
     set<pair<int, int>> jugados;
-    vector<vector<int>> matriz(n - 1, vector<int>(n / 2, 0));
 
-    // Iterar para n-1 días
     for (int day = 1; day <= n - 1; ++day) {
-
         #ifdef DEBUG
             cout << "Día " << day << ":" << endl;
         #endif
@@ -55,7 +52,6 @@ void crearCalendario(int n) {
             jugados.insert(make_pair(equipo1, equipo2));
         }
 
-        // Rotación
         int temp = equipos[n - 1];
         for (int i = n - 1; i > 1; --i) {
             equipos[i] = equipos[i - 1];
