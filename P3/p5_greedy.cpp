@@ -4,10 +4,10 @@
 #include<bits/stdc++.h> 
 using namespace std; 
 
-// Creating shortcut for an integer pair 
+// Creando un acceso directo para un par de enteros
 typedef pair<int, int> iPair; 
 
-// Structure to represent a graph 
+// Estructura para representar el grafo
 struct Graph 
 { 
 	int V, E; 
@@ -20,18 +20,18 @@ struct Graph
 		this->E = E; 
 	} 
 
-	// Utility function to add an edge 
+	// Funcion para añadir una arista
 	void addEdge(int u, int v, int w) 
 	{ 
 		edges.push_back({w, {u, v}}); 
 	} 
 
-	// Function to find MST using Kruskal's 
-	// MST algorithm 
+	// Funcion para hallar MST usando algoritmo de Kruskal
 	int kruskalMST(); 
 }; 
 
-// To represent Disjoint Sets 
+
+// Para representar conjuntos disjuntos
 struct DisjointSets 
 { 
 	int *parent, *rnk; 
@@ -40,28 +40,28 @@ struct DisjointSets
 	// Constructor. 
 	DisjointSets(int n) 
 	{ 
-		// Allocate memory 
+		// Asignar memoria 
 		this->n = n; 
 		parent = new int[n+1]; 
 		rnk = new int[n+1]; 
 
-		// Initially, all vertices are in 
-		// different sets and have rank 0. 
+		// Inicialmente, todos los vertices estan
+		// en conjuntos diferentes y tienen rango 0
 		for (int i = 0; i <= n; i++) 
 		{ 
 			rnk[i] = 0; 
 
-			//every element is parent of itself 
+			// Cada elemento es padre de si mismo
 			parent[i] = i; 
 		} 
 	} 
 
-	// Find the parent of a node 'u' 
+	// Encuentra el padre de un nodo 'u'
 	// Path Compression 
 	int find(int u) 
 	{ 
-		/* Make the parent of the nodes in the path 
-		from u--> parent[u] point to parent[u] */
+		/* Hacer que el padre de los nodos en el 
+		camino u--> parent[u] apunte a parent[u] */
 		if (u != parent[u]) 
 			parent[u] = find(parent[u]); 
 		return parent[u]; 
@@ -72,8 +72,8 @@ struct DisjointSets
 	{ 
 		x = find(x), y = find(y); 
 
-		/* Make tree with smaller height 
-		a subtree of the other tree */
+		/* Hacer que el arbol con menor altura sea un
+		subarbol del otro arbol */
 		if (rnk[x] > rnk[y]) 
 			parent[y] = x; 
 		else // If rnk[x] <= rnk[y] 
@@ -84,19 +84,19 @@ struct DisjointSets
 	} 
 }; 
 
-/* Functions returns weight of the MST*/
+/* La funcion devuelve el peso del MST */
 
 int Graph::kruskalMST() 
 { 
-	int mst_wt = 0; // Initialize result 
+	int mst_wt = 0; // Inicializa resultado
 
-	// Sort edges in increasing order on basis of cost 
+	// Ordenar las aristas en orden creciente según coste
 	sort(edges.begin(), edges.end()); 
 
-	// Create disjoint sets 
+	// Crear conjuntos disjuntos
 	DisjointSets ds(V); 
 
-	// Iterate through all sorted edges 
+	// Iterar por todos las aristas ordenadas
 	vector< pair<int, iPair> >::iterator it; 
 	for (it=edges.begin(); it!=edges.end(); it++) 
 	{ 
@@ -106,19 +106,19 @@ int Graph::kruskalMST()
 		int set_u = ds.find(u); 
 		int set_v = ds.find(v); 
 
-		// Check if the selected edge is creating 
-		// a cycle or not (Cycle is created if u 
-		// and v belong to same set) 
+		// Comprobar si la arista seleccionada esta
+		// creando un ciclo o no (ciclo es creado si
+		// u y v pertenecen al mismo conjunto)
 		if (set_u != set_v) 
 		{ 
-			// Current edge will be in the MST 
-			// so print it 
+			// La arista actual estara en el MST
+			// asi que la imprimimos
 			cout << u << " - " << v << endl; 
 
-			// Update MST weight 
+			// Actualizar peso del MST
 			mst_wt += it->first; 
 
-			// Merge two sets 
+			// Merge de los dos conjuntos
 			ds.merge(set_u, set_v); 
 		} 
 	} 
@@ -126,21 +126,34 @@ int Graph::kruskalMST()
 	return mst_wt; 
 } 
 
-// Driver program to test above functions 
+
 int main() 
 { 
-	/* Let us create above shown weighted 
-	and undirected graph */
-	int V = 9, E = 14; 
+	int V = 5, E = 9; 
 	Graph g(V, E);
 
-    // Creación del grafo
-    // 0: Plaza Azcarate
-    // 1: Plaza de la Libertad
-    // 2: Plaza Mayor
-    // 3: Plaza de las Maravillas
-    // 4: Plaza de la Constitucion
 
+	// Leyenda
+	cout << "Las plazas son: " << endl;
+	cout << "0: Plaza Azcarate" << endl;
+    cout << "1: Plaza de la Libertad" << endl;
+    cout << "2: Plaza Mayor" << endl;
+    cout << "3: Plaza de las Maravillas" << endl;
+    cout << "4: Plaza de la Constitucion" << endl << endl;
+
+	cout << "Las calles son: " << endl;
+	cout << "0-1: C./ Serrano" << endl;
+	cout << "0-2: C./ Lopez" << endl;
+	cout << "0-3: C./ Soriano" << endl;
+	cout << "0-4: C./ Portugalesa" << endl;
+	cout << "1-2: C./ No" << endl;
+	cout << "1-3: C./ Jobenas" << endl;
+	cout << "1-4: C./ Anguila" << endl;
+	cout << "2-4: C./ Bernabe" << endl;
+	cout << "3-4: C./ Portugalesa de arriba" << endl;
+
+
+    // Creación del grafo
     // 9 aristas (calles)
 	g.addEdge(0, 1, 1100000); // Azcarate a Libertad (Serrano)
 	g.addEdge(0, 2, 130000);  // Azcarate a Mayor (Lopez)
@@ -152,11 +165,11 @@ int main()
 	g.addEdge(2, 4, 554521);  // Mayor a Constitucion (Bernabe)
 	g.addEdge(3, 4, 143552);  // Maravillas a Constitucion (Portugalesa de arriba)
 
-
-	cout << "Edges of MST are \n"; 
+	cout << endl;
+	cout << "Las aristas del MST son \n"; 
 	int mst_wt = g.kruskalMST(); 
 
-	cout << "\nWeight of MST is " << mst_wt << endl; 
+	cout << "\nEl coste total es " << mst_wt << " euros."<< endl; 
 
 	return 0; 
 } 
