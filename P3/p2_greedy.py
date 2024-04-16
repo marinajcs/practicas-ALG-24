@@ -33,7 +33,7 @@ def finMaxComensales(C):
 			# Debug of elegidos
 			print(str(i) + " -> " + str(int(sentados[i]))+ " VALUE: " + str(C[i][sentados[i]]))
 
-            # Marcamos el elegido de mayor peso como visitado
+         		# Marcamos el elegido de mayor peso como visitado
 			comensalesVisitados[sentados[c]] = 1
 			
 			# reseteo del selector
