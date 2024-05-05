@@ -7,12 +7,16 @@ p1_test:
 	./p1_grafos.bin
 
 p2_compile:
-	@echo compiling the graph search algorithm P2
-	g++ -O2 -std=c++11 p2_grafos.cpp -o p2_grafos.bin
+	@echo Compiling the Hamiltonian Circuit of maximals of commensals.
+	g++ -O2 -std=c++11 p2_comensales.cpp -o p2_comensales.bin
+	@echo Compiling the Hamiltonian Circuit of maximals of commensals branch and bound.
+	g++ -O2 -std=c++11 p2_comensales_branchnbound.cpp -o p2_comensales_branchnbound.bin
 
 p2_test:
-	@echo executing the graph search algorithm P2
-	./p2_grafos.bin
+	@echo executing Backtrack algorithm of p2
+	./p2_comensales.bin
+	@echo executing Backtrack algorithm of p2
+	./p2_comensales_branchnbound.bin
 
 p3_compile:
 	@echo compiling the graph search algorithm P3
