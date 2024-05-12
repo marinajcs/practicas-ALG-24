@@ -20,11 +20,11 @@ p2_test:
 
 p3_compile:
 	@echo compiling the graph search algorithm P3
-	g++ -O2 -std=c++11 p3_grafos.cpp -o p3_grafos.bin
+	g++ -O2 -std=c++11 p3_senku.cpp -o p3_senku.bin
 
 p3_test:
 	@echo executing the graph search algorithm P3
-	./p3_grafos.bin
+	./p3_senku.bin
 
 p4_compile:
 	@echo compiling the graph search algorithm P4
