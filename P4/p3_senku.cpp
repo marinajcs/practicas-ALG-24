@@ -26,7 +26,7 @@ int contador_it = 0; // Para saber cuantas iteraciones ha hecho el for
 int contador_movs_explorados = 0; // Para saber cuantos movimientos fueron explorados
 /////
 
-vector<vector<bool>> visitados(n_filas, vector<bool>(n_columnas, false));
+// vector<vector<bool>> visitados(n_filas, vector<bool>(n_columnas, false));
 
 
 // Vector de movimientos para llegar a la solución.
@@ -239,41 +239,38 @@ void P3_Backtracking(pair<int,int> posActual, int movimientoSiguiente, int n, ve
             // Fila y columna para saber que nodo es en el tablero, yendo en orden de fila
             int fila = i / n_filas;
             int columna = i % n_columnas;
+        
+            // Valor del nodo explorandose actualmente
+            int nodo_actual = tablero_actualizado[fila][columna]; 
 
-            if (!visitados[fila][columna]) {
+            // Posicion actual del tablero (ficha que estamos evaluando)
+            pair<int,int> posicionActual = make_pair(fila, columna);
 
-                // Valor del nodo explorandose actualmente
-                int nodo_actual = tablero_actualizado[fila][columna]; 
+            // Si es una casilla evaluable
+            if (nodo_actual == 0) {
+                // Explorar posibles casos de la ficha actual
+                vector<int> posiblesMovimientos = hayMovimientosPosibles(posicionActual, tablero_actualizado);
 
-                // Posicion actual del tablero (ficha que estamos evaluando)
-                pair<int,int> posicionActual = make_pair(fila, columna);
+                // Si hay posibles movimientos de la ficha actual, explorarlos (generar sus correspondientes nodos)
+                if (!posiblesMovimientos.empty()) {
+                        // DEBUG: Movimientos posibles detectados
+                        // cout << "---- Hay " << posiblesMovimientos.size() << " movimientos posibles " << endl;
+                        ///////
+                    
+                    // Itera por los movimientos posibles
+                    for (int p = 0; p < posiblesMovimientos.size(); p++) {
+                        // DEBUG: Movimientos hechos hasta el momento en toda la ejecución
+                        contador_movs_explorados++;
+                        // cout << "Movimiento nº " << contador_movs_explorados << " siendo explorado de la iteracion " << contador_it << endl;
+                        ///////
 
-                // Si es una casilla evaluable
-                if (nodo_actual == 0) {
-                    // Explorar posibles casos de la ficha actual
-                    vector<int> posiblesMovimientos = hayMovimientosPosibles(posicionActual, tablero_actualizado);
+                        // Se hace llamada recursiva para crear ese nuevo nodo (ejecutando el movimiento posible)
+                        P3_Backtracking(posicionActual, posiblesMovimientos[p], n, tablero_actualizado, movimientos); 
 
-                    // Si hay posibles movimientos de la ficha actual, explorarlos (generar sus correspondientes nodos)
-                    if (!posiblesMovimientos.empty()) {
-                            // DEBUG: Movimientos posibles detectados
-                            // cout << "---- Hay " << posiblesMovimientos.size() << " movimientos posibles " << endl;
-                            ///////
-                        
-                        // Itera por los movimientos posibles
-                        for (int p = 0; p < posiblesMovimientos.size(); p++){
-                            // DEBUG: Movimientos hechos hasta el momento en toda la ejecución
-                            contador_movs_explorados++;
-                            // cout << "Movimiento nº " << contador_movs_explorados << " siendo explorado de la iteracion " << contador_it << endl;
-                            ///////
-
-                            // Se hace llamada recursiva para crear ese nuevo nodo (ejecutando el movimiento posible)
-                            P3_Backtracking(posicionActual, posiblesMovimientos[p], n, tablero_actualizado, movimientos); 
-
-                            // La llamada recursiva devuelve el control
-                            movimientos.pop_back();
-                        }
-
+                        // La llamada recursiva devuelve el control
+                        movimientos.pop_back();
                     }
+
                 }
             }
         }
