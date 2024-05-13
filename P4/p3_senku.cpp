@@ -4,20 +4,9 @@
 
 using namespace std;
 
-// vector<vector<int>> tablero = {
-//     {2, 2, 0, 0, 0, 2, 2},
-//     {2, 2, 0, 0, 0, 2, 2},
-//     {0, 0, 0, 0, 0, 0, 0},
-//     {0, 0, 0, 1, 0, 0, 0},
-//     {0, 0, 0, 0, 0, 0, 0},
-//     {2, 2, 0, 0, 0, 2, 2},
-//     {2, 2, 0, 0, 0, 2, 2},
-// };
-
 
 // VARIABLES GLOBALES: 
-
-int tablero[7][7] = {
+vector<vector<int>> tablero = {
     {2, 2, 0, 0, 0, 2, 2},
     {2, 2, 0, 0, 0, 2, 2},
     {0, 0, 0, 0, 0, 0, 0},
@@ -30,16 +19,15 @@ int tablero[7][7] = {
 
 
 int n_filas = 7, n_columnas = 7;
-int n_nodos = n_filas*n_columnas; // 32 fichas, 33 huecos para ponerlas, 49 casillas en total (7x7)
-int num_movimientos = 0;
+int n_nodos = n_filas * n_columnas; // 32 fichas, 33 huecos para ponerlas, 49 casillas en total (7x7)
 
-
+// DEBUG
 int contador_it = 0; // Para saber cuantas iteraciones ha hecho el for
 int contador_movs_explorados = 0; // Para saber cuantos movimientos fueron explorados
+/////
 
+vector<vector<bool>> visitados(n_filas, vector<bool>(n_columnas, false));
 
-// Vector para ver que ficha ha sido movida (????)
-// vector<bool> movimiento_hecho(n_nodos, false);
 
 // Vector de movimientos para llegar a la solución.
     // vector de: ( (posicion.x, posicion.y), movimiento )
@@ -48,15 +36,27 @@ int contador_movs_explorados = 0; // Para saber cuantos movimientos fueron explo
 vector< pair <pair<int,int>, int> > movimientosSolucion; 
 
 
+// FUNCIONES:
 
+/**
+ * Imprime el tablero
+*/
+void imprimirTablero(vector<vector<int>> tab) {
+    for (int i = 0; i < n_filas; ++i) {
+        for (int j = 0; j < n_columnas; ++j) {
+            cout << tab[i][j] << " ";
+        }
+        cout << endl;
+    }
+}
 
 /**
  * Funcion que devuelve si el estado del tablero actualmente es considerado solución
 */
-bool esSolucion() {
+bool esSolucion(vector<vector<int>> tableroActual) {
 
     // Si no hay ficha en el medio, no es solución
-    if (tablero[3][3] == 1) {
+    if (tableroActual[3][3] == 1) {
         return false;
     }
     // Comprobar que no haya más fichas aparte de la del medio
@@ -65,26 +65,26 @@ bool esSolucion() {
             if (i != 3 and j!= 3){
                 if (i == 0 or i == 1 or i == 5 or i == 6) {
                     if (j >= 2 and j <= 4 and j != 3) {
-                        if (tablero[i][j] == 0) {
+                        if (tableroActual[i][j] == 0) {
                             return false;
                         }
                     }
                 }
 
                 if ((i == 2 or i == 4)) {
-                    if (tablero[i][j] == 0) {
+                    if (tableroActual[i][j] == 0) {
                         return false;
                     }
                 }
 
                 if (i == 3) {
                     if (j >= 0 and j <= 2) {
-                        if (tablero[i][j] == 0) {
+                        if (tableroActual[i][j] == 0) {
                             return false;
                         }
                     }
                     if (j >= 4 and j <= 6) {
-                        if (tablero[i][j] == 0) {
+                        if (tableroActual[i][j] == 0) {
                             return false;
                         }
                     }
@@ -102,113 +102,58 @@ bool esSolucion() {
 /**
  * Devuelve los movimientos posibles, vacío si no hay movimientos posibles.
 */
-vector<int>  hayMovimientosPosibles (pair<int,int> posicion) {
+vector<int> hayMovimientosPosibles (pair<int,int> posicion, vector<vector<int>> tableroActual) {
     vector<int> movimientosPosibles;
 
     // Arriba?
-    if (tablero[posicion.first - 2][posicion.second] == 1 and (posicion.first - 2) >= 0) { // cuando salte hay una casilla libre
-        if (tablero[posicion.first - 1][posicion.second] == 0) { // ficha a comer que tiene justo delante
-            movimientosPosibles.push_back(0);
+    if ((posicion.first - 2) >= 0){ // No se sale del tablero
+        if (tableroActual[posicion.first - 2][posicion.second] == 1) { // cuando salte hay una casilla libre
+            if (tableroActual[posicion.first - 1][posicion.second] == 0) { // ficha a comer que tiene justo delante
+                movimientosPosibles.push_back(0);
+            }
         }
     }
 
     // Derecha?
-    if (tablero[posicion.first][posicion.second + 2] == 1 and (posicion.second + 2) < n_columnas) { // cuando salte hay una casilla libre
-        if (tablero[posicion.first][posicion.second + 1] == 0) { // ficha a comer que tiene justo delante
-            movimientosPosibles.push_back(1);
-        }
+    if ((posicion.second + 2) < n_columnas){ // No se sale del tablero
+        if (tableroActual[posicion.first][posicion.second + 2] == 1) { // cuando salte hay una casilla libre
+            if (tableroActual[posicion.first][posicion.second + 1] == 0) { // ficha a comer que tiene justo delante
+                movimientosPosibles.push_back(1);
+            }
+        }   
     }
 
     // Abajo?
-    if (tablero[posicion.first + 2][posicion.second] == 1 and (posicion.first + 2) < n_columnas) { // cuando salte hay una casilla libre
-        if (tablero[posicion.first + 1][posicion.second] == 0) { // ficha a comer que tiene justo delante
-            movimientosPosibles.push_back(2);
-        }
+    if ((posicion.first + 2) < n_columnas){ // No se sale del tablero
+        if (tableroActual[posicion.first + 2][posicion.second] == 1) { // cuando salte hay una casilla libre
+            if (tableroActual[posicion.first + 1][posicion.second] == 0) { // ficha a comer que tiene justo delante
+                movimientosPosibles.push_back(2);
+            }
+        }    
     }
 
     // Izquierda?
-    if (tablero[posicion.first][posicion.second - 2] == 1 and (posicion.second - 2) >= 0) { // cuando salte hay una casilla libre
-        if (tablero[posicion.first][posicion.second - 1] == 0) { // ficha a comer que tiene justo delante
-            movimientosPosibles.push_back(3);
-        }
+    if ((posicion.second - 2) >= 0){ // No se sale del tablero
+        if (tableroActual[posicion.first][posicion.second - 2] == 1) { // cuando salte hay una casilla libre
+            if (tableroActual[posicion.first][posicion.second - 1] == 0) { // ficha a comer que tiene justo delante
+                movimientosPosibles.push_back(3);
+            }
+        }    
     }
+
 
     return movimientosPosibles;
-}
-
-/**
- * Devuelve el movimiento resultante de mover la ficha que se pasa por parámetro
-*/
-pair <pair<int,int>, int> siguienteMovimiento (pair<int,int> posicion, int movimiento) {
-    pair <pair<int,int>, int> movimientoSiguiente;
-
-    // Arriba
-    if (movimiento == 0) {
-        movimientoSiguiente = make_pair( make_pair(posicion.first-2, posicion.second), movimiento );
-    }
-    // Derecha
-    else if (movimiento == 1) {
-        movimientoSiguiente = make_pair( make_pair(posicion.first, posicion.second+2), movimiento );
-    }
-    // Abajo
-    else if (movimiento == 2) {
-        movimientoSiguiente = make_pair( make_pair(posicion.first+2, posicion.second), movimiento );
-    }
-    // Izquierda
-    else if (movimiento == 3) {
-        movimientoSiguiente = make_pair( make_pair(posicion.first, posicion.second-2), movimiento );
-    }
-    else{
-        movimientoSiguiente = make_pair( make_pair(posicion.first, posicion.second), -1);
-    }
-
-    return movimientoSiguiente;
-}
-
-/**
- * Función para imprimir el tablero
-*/
-void imprimirTablero(int ** tab) {
-    for (int i = 0; i < n_filas; ++i) {
-        for (int j = 0; j < n_columnas; ++j) {
-            cout << tab[i][j] << " ";
-        }
-        cout << endl;
-    }
-}
-
-/**
- * Devuelve la siguiente posicion del tablero recorriendo por filas
-*/
-pair<int,int> siguientePosicion(pair<int,int> posActual) {
-    pair<int, int> nuevaPos;
-
-    if (posActual.first == 6 and posActual.first == 6) {
-        // ultimo nodo de todos
-        nuevaPos.first = -1;
-        nuevaPos.second = -1;
-    }
-    else if (posActual.first <= 5) {
-        nuevaPos.first = posActual.first;       // misma fila
-        nuevaPos.second = posActual.second + 1; // siguiente columna
-    }
-    else if (posActual.first == 6 and posActual.first <= 5) {
-        nuevaPos.first = posActual.first + 1;   // nueva fila
-        nuevaPos.second = 0;                    // primera columna de la nueva fila
-    }
-
-    return nuevaPos;
 }
 
 /**
  * Función que actualiza el tablero según el movimiento de la ficha que se le pase
  * Devuelve el tablero actualizado
 */
-int ** ejecutarMovimientoEnTablero (pair<int,int> pos, int movimiento, int ** tablero) {
+vector<vector<int>> ejecutarMovimientoEnTablero (pair<int,int> pos, int movimiento, vector<vector<int>> tablero) {
     // Asumimos que es un movimiento posible porque tenemos una función
     // que devuelve movimientos posibles
 
-    int ** n_tab = tablero;
+    vector<vector<int>> n_tab = tablero;
 
     switch (movimiento) {
         case 0: // Hacia arriba
@@ -236,6 +181,7 @@ int ** ejecutarMovimientoEnTablero (pair<int,int> pos, int movimiento, int ** ta
     return n_tab;
 }
 
+
 /**
  * posActual = posicion actual de la ficha a mover
  * movimientoSiguiente = movimiento que hará la ficha en posActual
@@ -243,90 +189,105 @@ int ** ejecutarMovimientoEnTablero (pair<int,int> pos, int movimiento, int ** ta
  * tablero_actual = tablero con las actualizaciones de los movimientos que llevamos hasta el momento
  * movimientos = movimientos hasta el momento explorandose
 */
-void P3_Backtracking(pair<int,int> posActual, int movimientoSiguiente, int n, int ** tablero_actual, vector< pair <pair<int,int>, int> > & movimientos) {
-    if (esSolucion()) {
-        cout << "Llegó a solución con " << movimientos.size() << "movimientos" << endl;
+void P3_Backtracking(pair<int,int> posActual, int movimientoSiguiente, int n, vector<vector<int>> tablero_actual, vector< pair <pair<int,int>, int> > & movimientos) {
+    if (esSolucion(tablero_actual)) {
         movimientosSolucion.resize(movimientos.size());
         movimientosSolucion = movimientos;
-        // cout << "solucion almacenada" << endl;
         return;
     }
 
-    int ** tablero_actualizado = tablero_actual;
+    if (movimientos.size() >= 32){ 
+        return;
+    }
 
-    // Si se ha hecho un movimiento, se aplica al nodo que estamos explorando (va fuera del for?)
+    vector<vector<int>> tablero_actualizado = tablero_actual;
+
+
+    // Si se ha hecho un movimiento, se aplica al nodo que estamos explorando
     if (movimientoSiguiente != -1){
 
-        cout << "Tablero antes: " << endl;
-        imprimirTablero(tablero_actual);
+        // DEBUG: Imprimir tablero ántes de hacer el movimiento
+        // cout << "Tablero antes: " << endl;
+        // imprimirTablero(tablero_actual);
+        // cout << endl;
+        //////
+
 
         // Se hace el siguiente movimiento con la ficha que es
-        movimientos.push_back(siguienteMovimiento(posActual, movimientoSiguiente)); // antes movimientos[i].first
-        tablero_actualizado = ejecutarMovimientoEnTablero(posActual, movimientoSiguiente, tablero_actual); // actualiza tablero
-        // posicionActual = movimientos.back().first;  // se actualiza la posicion actual
-        std::string mov = "";
-        cout << "tablero despues:"<<endl;
-        cout << "ficha: ("<<posActual.first<<","<<posActual.second<<") movio ";
-        if (movimientoSiguiente == 0) mov = "arriba";
-        else if (movimientoSiguiente == 1) mov = "derecha";
-        else if (movimientoSiguiente == 2) mov = "abajo";
-        else if (movimientoSiguiente == 3) mov = "izquierda";
+        movimientos.push_back(make_pair(posActual, movimientoSiguiente)); // antes siguienteMovimiento(posActual, movimientoSiguiente)
+        tablero_actualizado = ejecutarMovimientoEnTablero(posActual, movimientoSiguiente, tablero_actualizado); // actualiza tablero
+
+
+        // DEBUG: Imprimir tablero despues del movimiento hecho
+        // std::string mov = "";
+        // cout << "tablero despues:"<<endl;
+        // cout << "ficha: (" << posActual.first << "," << posActual.second << ") movio ";
+        // if (movimientoSiguiente == 0) mov = "arriba";
+        // else if (movimientoSiguiente == 1) mov = "derecha";
+        // else if (movimientoSiguiente == 2) mov = "abajo";
+        // else if (movimientoSiguiente == 3) mov = "izquierda";
         
-        cout << mov << endl;
-        imprimirTablero(tablero_actualizado);
-        cout << endl;
+        // cout << mov << endl;
+        // imprimirTablero(tablero_actualizado);
+        // cout << endl << endl;
+        //////
     }
 
-    for (int i = 0; i < n; i++) {
-        contador_it++;
-        // Fila y columna para saber que nodo es en el tablero, yendo en orden de fila
-        int fila = i / n_filas;
-        int columna = i % n_columnas;
+    if (movimientos.size() < 31) {
+        for (int i = 0; i < n; i++) {
+            contador_it++;
+            // Fila y columna para saber que nodo es en el tablero, yendo en orden de fila
+            int fila = i / n_filas;
+            int columna = i % n_columnas;
 
-        // Valor del nodo explorandose actualmente
-        int nodo_actual = tablero_actualizado[fila][columna]; 
+            if (!visitados[fila][columna]) {
 
-        pair<int,int> posicionActual = make_pair(fila, columna);
+                // Valor del nodo explorandose actualmente
+                int nodo_actual = tablero_actualizado[fila][columna]; 
 
-        // Si es una casilla evaluable
-        if (nodo_actual == 0) {
+                // Posicion actual del tablero (ficha que estamos evaluando)
+                pair<int,int> posicionActual = make_pair(fila, columna);
 
-                // Explorar posibles casos de la ficha actual
-                vector<int> posiblesMovimientos = hayMovimientosPosibles(posicionActual);
+                // Si es una casilla evaluable
+                if (nodo_actual == 0) {
+                    // Explorar posibles casos de la ficha actual
+                    vector<int> posiblesMovimientos = hayMovimientosPosibles(posicionActual, tablero_actualizado);
 
-                // Si hay posibles movimientos de la ficha actual, explorarlos (generar sus correspondientes nodos)
-                if (!posiblesMovimientos.empty()) {
-                        // cout << "---- Hay " << posiblesMovimientos.size() << " movimientos posibles " << endl;
-                    
-                    for (int p = 0; p < posiblesMovimientos.size(); p++){
-                        contador_movs_explorados++;
-                        // Se hace llamada recursiva para crear ese nuevo nodo (ejecutando el movimiento posible)
-                        P3_Backtracking(posicionActual, posiblesMovimientos[p], n, tablero_actualizado, movimientos); 
+                    // Si hay posibles movimientos de la ficha actual, explorarlos (generar sus correspondientes nodos)
+                    if (!posiblesMovimientos.empty()) {
+                            // DEBUG: Movimientos posibles detectados
+                            // cout << "---- Hay " << posiblesMovimientos.size() << " movimientos posibles " << endl;
+                            ///////
+                        
+                        // Itera por los movimientos posibles
+                        for (int p = 0; p < posiblesMovimientos.size(); p++){
+                            // DEBUG: Movimientos hechos hasta el momento en toda la ejecución
+                            contador_movs_explorados++;
+                            // cout << "Movimiento nº " << contador_movs_explorados << " siendo explorado de la iteracion " << contador_it << endl;
+                            ///////
 
-                        // La llamada recursiva devuelve el control
-                        movimientos.pop_back();
+                            // Se hace llamada recursiva para crear ese nuevo nodo (ejecutando el movimiento posible)
+                            P3_Backtracking(posicionActual, posiblesMovimientos[p], n, tablero_actualizado, movimientos); 
+
+                            // La llamada recursiva devuelve el control
+                            movimientos.pop_back();
+                        }
+
                     }
-
                 }
-
+            }
         }
-
-
-        
     }
+
+
+    
 }
 
 int main() {
-    int* tableroPtr[7];
-    for (int i = 0; i < 7; ++i) {
-        tableroPtr[i] = tablero[i];
-    }
-
     vector< pair <pair<int,int>, int> > movimientos;
-    P3_Backtracking(make_pair(0,0), -1, n_nodos, tableroPtr, movimientos);
+    P3_Backtracking(make_pair(0,0), -1, n_nodos, tablero, movimientos);
     
-    cout << endl << "\t*****Número de movimientos: " << movimientosSolucion.size() << endl;
-
+    cout << endl << "\t*****Número de movimientos de la solucion: " << movimientosSolucion.size() << endl;
 
     // Si hay solucion, se imprime
     if (movimientosSolucion.size() > 0){
@@ -346,9 +307,10 @@ int main() {
         cout << "\tNo se ha encontrado solucion" << endl;
     }
 
-    // Debug
-    cout << endl << "contador iteraciones for: " << contador_it << endl;
-    cout << endl << "contador movimientos explorados: " << contador_movs_explorados << endl;
+    // DEBUG contadores de iteraciones y movimientos explorados en total
+    // cout << endl << "Contador iteraciones for: " << contador_it << endl;
+    // cout << endl << "Contador movimientos explorados: " << contador_movs_explorados << endl;
+    ///////
 
 
     return 0;
