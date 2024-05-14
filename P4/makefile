@@ -26,23 +26,15 @@ p3_test:
 	@echo executing the graph search algorithm P3
 	./p3_senku.bin
 
-p4_compile:
+p4p5_compile:
 	@echo compiling the graph search algorithm P4
-	g++ -O2 -std=c++11 p4_grafos.cpp -o p4_grafos.bin
+	g++ -O2 -std=c++11 p4p5_laberinto.cpp -o p4p5_laberinto.bin
 
-p4_test:
+p4p5_test:
 	@echo executing the graph search algorithm P4
-	./p4_grafos.bin
+	./p4p5_laberinto.bin
 
-p5_compile:
-	@echo compiling the graph search algorithm P5
-	g++ -O2 -std=c++11 p5_grafos.cpp -o p5_grafos.bin
-
-p5_test:
-	@echo executing the graph search algorithm P5
-	./p5_grafos.bin
-
-all: p1_compile p1_test p2_compile p2_test p3_compile p3_test p4_compile p4_test p5_compile p5_test
+all: p1_compile p1_test p2_compile p2_test p3_compile p3_test p4p5_compile p4p5_test
 
 clean:
 	@rm -f *.bin
