@@ -20,7 +20,7 @@ void calculaCosteMin(vector<vector<int>> &dp, vector<vector<int>> &next, int n) 
             for (int j = 0; j < n; j++) {
                 if (dp[i][k] < INF && dp[k][j] < INF && dp[i][j] > dp[i][k] + dp[k][j]) {
                     dp[i][j] = dp[i][k] + dp[k][j];
-                    next[i][j] = k; // Actualiza el punto intermedio
+                    next[i][j] = k;
                 }
             }
         }
@@ -29,13 +29,13 @@ void calculaCosteMin(vector<vector<int>> &dp, vector<vector<int>> &next, int n) 
 
 vector<int> construirRutas(int i, int j, const vector<vector<int>> &next) {
     if (next[i][j] == -1)
-        return {i, j}; // Camino directo
+        return {i, j};
 
     int intermedia = next[i][j];
     vector<int> ruta = construirRutas(i, intermedia, next);
-    ruta.pop_back(); // Evitar duplicación
+    ruta.pop_back();
     vector<int> subruta = construirRutas(intermedia, j, next);
-    ruta.insert(ruta.end(), subruta.begin(), subruta.end()); // Concatenar caminos
+    ruta.insert(ruta.end(), subruta.begin(), subruta.end());
     
     return ruta;
 }
@@ -65,7 +65,7 @@ void imprimirSolucion(const vector<vector<int>> &dp, const vector<vector<int>> &
 
 int main()
 {
-    int n = costos.size(); // Número de aldeas
+    int n = costos.size();
     vector<vector<int>> dp = costos, next(n, vector<int>(n, -1));
 
     calculaCosteMin(dp, next, n);
