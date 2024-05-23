@@ -1,10 +1,10 @@
 p1_compile:
 	@echo compiling the dynamic programming algorithm P1
-	g++ -O2 -std=c++11 p1.cpp -o p1.bin
+	g++ -O2 -std=c++11 p1_canoa.cpp -o p1_canoa.bin
 
 p1_test:
 	@echo executing the dynamic programming algorithm P1
-	./p1.bin
+	./p1_canoa.bin
 
 p2_compile:
 	@echo compiling the dynamic programming algorithm P2
