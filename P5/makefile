@@ -8,11 +8,11 @@ p1_test:
 
 p2_compile:
 	@echo compiling the dynamic programming algorithm P2
-	g++ -O2 -std=c++11 p2.cpp -o p2.bin
+	g++ -O2 -std=c++11 p2_vuelos.cpp -o p2_vuelos.bin
 
 p2_test:
 	@echo executing the dynamic programming algorithm P2
-	./p2.bin
+	./p2_vuelos.bin
 
 p3_compile:
 	@echo compiling the dynamic programming algorithm P3
