@@ -17,7 +17,7 @@ vector<vector<int>> costos {
 void calculaCosteMin(vector<vector<int>> &dp, vector<vector<int>> &next, int n) {
     for (int k = 0; k < n; k++) {
         for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
+            for (int j = i + 1; j < n; j++) {
                 if (dp[i][k] < INF && dp[k][j] < INF && dp[i][j] > dp[i][k] + dp[k][j]) {
                     dp[i][j] = dp[i][k] + dp[k][j];
                     next[i][j] = k;
