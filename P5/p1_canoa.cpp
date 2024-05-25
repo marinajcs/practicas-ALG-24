@@ -63,13 +63,37 @@ void imprimirSolucion(const vector<vector<int>> &dp, const vector<vector<int>> &
     }
 }
 
-int main()
-{
+int main() {
     int n = costos.size();
     vector<vector<int>> dp = costos, next(n, vector<int>(n, -1));
 
     calculaCosteMin(dp, next, n);
     imprimirSolucion(dp, next, n);
+
+
+    cout << "Matriz de costos mínimos (DP)" << endl;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            if (dp[i][j] == INF){
+                cout << "- ";
+            } else {
+                cout << dp[i][j] << " ";
+            }
+        }
+        cout << endl;
+    }
+
+    cout << "Matriz de viajes intermedios (next)" << endl;
+    for(int i = 0; i < n; i++) {
+        for(int j = 0; j < n; j++) {
+            if (next[i][j] == -1){
+                cout << "* ";
+            } else {
+                cout << next[i][j]+1 << " ";
+            }
+        }
+        cout << endl; 
+    }
 
     return 0;
 }
