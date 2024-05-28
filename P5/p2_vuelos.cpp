@@ -7,13 +7,6 @@ using namespace std;
 
 const int INF = 999999;
 
-// vector<vector<int>> costos {
-//     {0, 3, 3, INF, INF},
-//     {INF, 0, 4, 7, INF},
-//     {INF, INF, 0, 2, 3},
-//     {INF, INF, INF, 0, 2},
-//     {INF, INF, INF, INF, 0}};
-
 int t_escala = 1; // Tiempo de escala, en este caso es 1 para todos
 
 vector<vector<int>> costos = {
